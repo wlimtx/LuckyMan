@@ -27,7 +27,7 @@ public class MyTest {
     private static final String TEST_ADMIN_NAME = "admin";
     private static final String TESTUSER_1_NAME = "user1";
     private static final String TEST_FIXTURES_PATH = "src/test/fixture";
-
+    private static final String ChainCodeNavtivePath = "/sdkintegration/gocc/luckBytes_demo";
     private static final String CHAIN_CODE_NAME = "lottery_go";
     private static final String CHAIN_CODE_PATH = "github.com/example_cc";
     private static final String CHAIN_CODE_VERSION = "1";
@@ -122,7 +122,6 @@ public class MyTest {
             channel.addEventHub(eventHub);
         }
 
-
         client.setUserContext(org1.getUser(TESTUSER_1_NAME));
 //
         channel.initialize();
@@ -130,7 +129,7 @@ public class MyTest {
 
         if (false) {
 //            installChaincode(client, channel, org1, 0, 1);
-            installChaincode(client, channel, org1, 0, 1);//暂时这两个动作要一起执行
+            installChaincode(client, channel, org1, 0, 2);//暂时这两个动作要一起执行
             //背书节点背书
             Collection<ProposalResponse> proposalResponses = instantiateChaincode(client, channel, org1, 0, 1);//1,-,0,0,
             channel.sendTransaction(proposalResponses, channel.getOrderers()).thenApply(transactionEvent -> {
@@ -143,46 +142,51 @@ public class MyTest {
 
         for (Peer peer : org1.getPeers()) channel.addPeer(peer);
 //        for (Peer peer : org2.getPeers()) channel.addPeer(peer);
-        queryChaincode(client, channel, org1, 0, 1, "fa67ad29516c1caa360ab946d3c02ec683ef2569c65e091da57178f502fea0c1");
-        queryChaincode(client, channel, org1, 0, 1, "6d65c8f0555e270bd562ab84235c965de942390b1c99b25a9646095b81c78021");
-        queryChaincode(client, channel, org1, 0, 1, "5c2dc969509e8021597c1eb37b0b3534b26972abe5721cf3c45f0fd86ac6133c");
-        queryChaincode(client, channel, org1, 0, 1, "e762186ee2d974e2849d6058ec4a35ec04cae6ef794a6a9197dc0d4a3a74fa0d");
+        queryChaincode(client, channel, org1, 0, 1);
+//        if (true)return;
 
 //        if (true)return;
         client.setUserContext(org1.getPeerAdmin());
 
         ArrayList<Peer> peers = new ArrayList<>();
-        peers.add(org1.getPeers().iterator().next());
+        Iterator<Peer> I = org1.getPeers().iterator();
+        peers.add(I.next());
+        peers.add(I.next());
 //        peers.add(org2.getPeers().iterator().next());
         Collection<ProposalResponse> proposalResponses = invokeChaincode(client, channel, peers, new String[]{
-"lottery","a"
-//                "bet", "1", "10", "yFNYF+PmuC66cNDqhyhGNRpXkaAIAR3fqmwFDq2LmE4=", "q5JTjDpHSVFbNpkE/k6Kg/4zrZJYb8jwiaZyViBHCdKUG9QH4tMXFf9XeeEQQKgEYvzYPyuMUx67qYie1b7JafLwd0B0sxfkC9PDymdA3lxFjUYBrQNEfo3/BE71DDYdC5/u2+0E4vULvI4OZAdNOcDk2ma08+hzbUw3BShEiuVOGAXLf+IMKKWSgzFl+IJsZN6WnUeHLHVtYyNGx3L0yqDPYWRlPIAHRewM07GRok5Eo5RHoe2ycgUAilbqZRAM7QwVg5+Z9f9SzpmfhFuXmY5hBvkgbBnFUyRdUmzNTZfGyyGDRrdWer7c0lbl7w78hCMASGrpIPAIFfwwklp88w==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1hxwCC12Xui3/JxfPA2pUQ4ev8JAfDZkWpQ6lEGUJLtINKYOWRpUZ3OeLs0RVGfkhzf9s68PLGXPU6ZX5eVaR+NDrKi0Y8/0sT98o3nz/ccDqeEgJzN7CXmCEiDtOnlFEJOVfPW25NOU+EU+LRzJBcWobSgUC48zTfzZcCkekxrE61hbvOi5MeqCti9waucsxBYQegj+78JSixOkuuOmiT3K6izwI3ZjWpioxsOuxCJF+QxmJXEGWF0egHSt5HwSGRr7TnauTmHdgm8/KlrolyoQ/yPoFe1pwEzg9xo3atZVNx/kNszyJ3cJSwjsvTXVJ/hdFB639S1eWAldjePg7QIDAQAB"
+"lottery"
 
-//                "bet", "5", "5", "3TTb/iHa9h2QfmNJD9PEn28SGz+wGE5t6Gxe26oj8/s=", "mUPiuj91fcGFcgq69C8Fn/Py0BVFNYdUeCC+7ZRTTmCPQI1MMEuVvYBSMixPM5OQygooph4uNFJOgarqMgkaF9Sx06sfKWpN1SDBGgBUO9eUDA0wi+5ovWuZ271yDCEQmQrDcNc5zFFLssL8xMsp8CKoJQy2R2ijlXfMANAuclBtgSPmcLZli/Zddk56pYzXBEVcFrahC3O/XTaE9/NQja4L9JfAfzDXdj0dgKgg2NSaoirzgmcxuUhMtXquhC+DoVx7v2LvSa8GKr07tFrxN+jUnfywfrtbvDl3OxmRMx4WHs94nnfT0lIfHnrtg9s4BqXF3n3Z5jkXcQ8apc+ePA==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqZK5PmwmJJP1gLt7kKryINxwFt0HdkOuSBNuk4t+dveWKq1+NeAKTz+2KN7w9MndrsVRY5C0lKtn30iIPHvKjf5hrgaWQMF+T56XG10IZZjt1yjBRCV9uUAD5Zlsd9xEZFRDzzNuNRpacfo1e3YITEkAJsMmHAmYf6jz/vKgbWQN3/0k5+KpxTD6avcqLP5un5riXhE3j3Thd6vOQhPh/ocLu7030PCBa1pS0thKsBPgmI3MtHpA7jE7TBBE/slFwaZuhmDbG9f5vCeGcJkahfLj58ifok1SH/u6tMiqiQNxLaYVeAZ+zcX29Z748P3Usjp2S1TcLBPsbMQkva9/QIDAQAB"
+//                "bet", "80", "cgZjfU4VWATsteKEa0+UdqalGzBoKb2V5FR6Bqptq3c=", "xkQFcNGHd7HXgKtDmJ2xjEDeJ+JidaM9AQ9uSasfhxkkFP/Lq9vOzmZCIBIAT+EroY2D3CnVMQu2WEQmiaTKOhtJnNeS6xqHaifyehaq2I2MRLKvZUDXK7cRM6k1ksI1A1XLB/0Fz1xAnpGzFqGUl7tyqVp75tpkAJwlvnsCKyM7gQlvRPavEMVaKP18nmNd3AJV52rvKcQfC/F3C87hbF28DJGszcl5y6EQwnDd4Xg1FoM9QMCgHU3B70r41ueYoLzCRdKbTyK8qPAPIjG1mNVTdc2fGNrsl0ZrlMEP/HDqMorF4tukHe4YE1ViU0bhYMOzqlj6qbwttceP8bAQ4A==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1hxwCC12Xui3/JxfPA2pUQ4ev8JAfDZkWpQ6lEGUJLtINKYOWRpUZ3OeLs0RVGfkhzf9s68PLGXPU6ZX5eVaR+NDrKi0Y8/0sT98o3nz/ccDqeEgJzN7CXmCEiDtOnlFEJOVfPW25NOU+EU+LRzJBcWobSgUC48zTfzZcCkekxrE61hbvOi5MeqCti9waucsxBYQegj+78JSixOkuuOmiT3K6izwI3ZjWpioxsOuxCJF+QxmJXEGWF0egHSt5HwSGRr7TnauTmHdgm8/KlrolyoQ/yPoFe1pwEzg9xo3atZVNx/kNszyJ3cJSwjsvTXVJ/hdFB639S1eWAldjePg7QIDAQAB"
 
+//                "encrypt", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1hxwCC12Xui3/JxfPA2pUQ4ev8JAfDZkWpQ6lEGUJLtINKYOWRpUZ3OeLs0RVGfkhzf9s68PLGXPU6ZX5eVaR+NDrKi0Y8/0sT98o3nz/ccDqeEgJzN7CXmCEiDtOnlFEJOVfPW25NOU+EU+LRzJBcWobSgUC48zTfzZcCkekxrE61hbvOi5MeqCti9waucsxBYQegj+78JSixOkuuOmiT3K6izwI3ZjWpioxsOuxCJF+QxmJXEGWF0egHSt5HwSGRr7TnauTmHdgm8/KlrolyoQ/yPoFe1pwEzg9xo3atZVNx/kNszyJ3cJSwjsvTXVJ/hdFB639S1eWAldjePg7QIDAQAB", "JIiBrQv4o4bptsKGHLshcq5n/7N70nrt70VYbD7JwXc=", "BlvzzAaAV5U4O06fkQzq+Q=="
 
-//                "bet", "14", "20", "nZkbF2pj16moe54KbGZF70KiwOcuWs/ogIQedWtWkcc=", "boBToYiUNsJCHsCGbG5U1mrU26VQ2+WNZ4+vqN5hAvY+q71vOzr0bk+KfddWa9lo/rSoBpCwbYfP+WRLbnADZ12900GZnISwmk32NxmhXEY6M43TObGd3YWXaqDvptXG9slx0K7b2TZpszRyShpM+z2eLMDu7klw4QCfSGc1v9vn9Lazf1N5hyB3SdccotbHQNeI/sQR/98pRaYtjeMzMGVdov207UTMg7PvIixeAmQChOf5PbYQKShKC+Lm6N0VeIC895JrqIsadtf7+qnUr3cXJAP6iTbg1C3fCQBmab2F5dqxjmYbtkzNJ86IWFskFz9XhimM+qcDblFsOwfI/Q==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA26QugKB980Yh4KGkNFx5fjohk2ED9Y/zk15CB2dlYcmrSu7uIgAf/Orb8TyrpnG4RazZvu9p6q6c6tB7HBepSsG/RvbdHN2F9G+5YZX1wdLODVNTkevs1KElTCOQpBGf74q0hEgVb7yn2SCYHcFPGDoSPE6+MzE/OYxUxJ6BYD7TkJ59uYEa1eozphJ3U049RoXP55VyXTOrEnLcxbmmQedLz5B2gaZ9cuvW2CfeafulnmwrpXcc3Yh8g4TT0Oicmr85URPG/IFzGNAT9OARyPwqmimoZuPeLJ7JDVb6AvrhCisIdNzj84WhhTF3KRw0pRKvACtBi+L/DXXfLj4O0wIDAQAB"
+//                "bet", "90", "57DOXHh/zFnvMZ6o59YXysbE43vsoXiwT7Z20e7SgW0=", "xYWmooOmvNh6D/+YMyEI8qkTbm4KflQ9rJhzpi9KaC9O4mRCND0xFmuLxUbZLmwneBb8CTEoV+RNAO6+AbOkx0LP14h0bihKUQnoyPz+R4H1mHyzvynudY+BwgojDl1ZoKF3MhGCbKQwQZbTH6nXB6uoRpCxklx5nXcJr88P7E3unpLHaQEIsxn7FJyaKFwQAxF8v/UzBcLBX5NGrjMUKWMcDG38IP0kffXTUw8lpkAs5AnB8VTmTRM70h1hHd/MhSh/jKfzwGFv+RJf6Oux1QBDHtpqoVXZBKbF2U69EiPzl2j4t6qkwMm9MR+iDDyDBnXZgqivHLbFmcKB14l/sw==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqZK5PmwmJJP1gLt7kKryINxwFt0HdkOuSBNuk4t+dveWKq1+NeAKTz+2KN7w9MndrsVRY5C0lKtn30iIPHvKjf5hrgaWQMF+T56XG10IZZjt1yjBRCV9uUAD5Zlsd9xEZFRDzzNuNRpacfo1e3YITEkAJsMmHAmYf6jz/vKgbWQN3/0k5+KpxTD6avcqLP5un5riXhE3j3Thd6vOQhPh/ocLu7030PCBa1pS0thKsBPgmI3MtHpA7jE7TBBE/slFwaZuhmDbG9f5vCeGcJkahfLj58ifok1SH/u6tMiqiQNxLaYVeAZ+zcX29Z748P3Usjp2S1TcLBPsbMQkva9/QIDAQAB"
 
-//                "bet", "20", "40", "88uX5HkN05htW9Ftirn9gOpGG6o/2V6c1BAYFGjfLLA=", "naCc1qUiHrzlJY5nXXmMpcTDItQ2vKECH9EXtK4xfLjD08casggbw6Q7e59kmSmK3Vot1jQYocC3HEZRiwpqGGWz6g1N46dl87D9+ZdWU/IYxPZ/an2d0znT+pvC8w5R7uv1xhzGtrauW0ta+/FOg0iG184X9ju916o0yQI7SI22V8JQswuwOetAExKToJEW8ZC2ecwbrslGlRLz94Vxas76VLxjrHOBGyfQPWcLHTypCBOIvEtjdIdE6+yOS+ssPHK/VwwCx9rxglPSrjQdRHR0CMipPwlebPUv4DfueWcdJV5k0dT8mzuffjxTD1z7ziiRVVF0bbvzRQEaQ5X/qw==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwLftxdynlgBERcWhufQ8kxCYztfcjcvWNioFLcCSo4AgBfowEDAXN9IUvUqNtFAHuyxhvB+bU4N6K4KhbkZeDBjbeTm5DiaW8klI5WAi4/51byl3dxPPL1MmjLwnGZMnC/A8002l4hDV4BVhvFeIIyjUKtcF+X0krH3h+5Hv9a1CX7K8mebhivbNFksM1KAZauZ0qJf9TRDC1JY9M+braC17hb52tBGWtnkQ9KDo78Svx6VFZgwl3itDj7E6dnfevajwoPJtmcCQEiA+ym8Nq+Uxv8Wvdq72vMEuXiWtBR6oo6rqaJG2n8mSdEVE/NVs0Qv0Cl/i7UzOTlJQR58dowIDAQAB"
+//                "bet", "40", "qCIU0VgOmbo0fjGlcRtVbePjjXX5sFT9cMx1nqNdOm0=", "sYUZljhObOf85LMmybBDgMfJ7tpE+stYE38dQa8xBHS2L2oPFtnacgHdlBeB54rzY7Uag2qzPvpQ3WQOMNfP3uUS0yaraR10EwsC9RRRI5tzd4pNTmGhneeTTkVILKrCQTWetFwShbUo6lvX/W2sDBgp45129mmDdQ4sqsk+YdaG5zDQli4+f2VtIgz3w4WDEsoHPyu9pO+E4HJ9pLA3aScYzDuExhfJmHqkiEiB3ha5tB4BDhy+icsYnDjJ54i+OEXiBjl8fl/cddyBssqOW19JXKoI/daZegpKte9F2chqHXkutgUkb3Ue2cDJ4qPM8GIQgKKEJi2tr2wfoAAEEQ==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA26QugKB980Yh4KGkNFx5fjohk2ED9Y/zk15CB2dlYcmrSu7uIgAf/Orb8TyrpnG4RazZvu9p6q6c6tB7HBepSsG/RvbdHN2F9G+5YZX1wdLODVNTkevs1KElTCOQpBGf74q0hEgVb7yn2SCYHcFPGDoSPE6+MzE/OYxUxJ6BYD7TkJ59uYEa1eozphJ3U049RoXP55VyXTOrEnLcxbmmQedLz5B2gaZ9cuvW2CfeafulnmwrpXcc3Yh8g4TT0Oicmr85URPG/IFzGNAT9OARyPwqmimoZuPeLJ7JDVb6AvrhCisIdNzj84WhhTF3KRw0pRKvACtBi+L/DXXfLj4O0wIDAQAB"
+
+//                "bet", "70", "HvW1VTeq/DzGSFzIzS6KaOGz/PvdJVNUt6/q1OB4L1Q=", "VeO2LKjBC3XUl4N8aBriF5bQdj6KtgD2MdKKTjHFqQapT71Ypgba0aNePKTXGjig3c9NnT0UXWfZi6uEGafr/n/UY1oUAFuM5RKImRh+rWKnxcMBfPFS2G96EYs9j4As0dWVeqrwJpnX5GnQ/BP5Dz2jvYThAl985hLSqvrHFh8kAvKJ5mBS/cyuly70ta1ddUCnY+NWa4JHFa8m2x9sFzyX0LH5cW6LZj5vlifSIs6P0U4u8bi0jnVzwtD0jHM3R0aD3L7AA1C8pgeOeHm5/8b2+FrVbNeAeVgib63gH2MC8bXThSzu2oLuV5WWKS5qIEBhH2SLrVVDLfNSyQwhpw==", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwLftxdynlgBERcWhufQ8kxCYztfcjcvWNioFLcCSo4AgBfowEDAXN9IUvUqNtFAHuyxhvB+bU4N6K4KhbkZeDBjbeTm5DiaW8klI5WAi4/51byl3dxPPL1MmjLwnGZMnC/A8002l4hDV4BVhvFeIIyjUKtcF+X0krH3h+5Hv9a1CX7K8mebhivbNFksM1KAZauZ0qJf9TRDC1JY9M+braC17hb52tBGWtnkQ9KDo78Svx6VFZgwl3itDj7E6dnfevajwoPJtmcCQEiA+ym8Nq+Uxv8Wvdq72vMEuXiWtBR6oo6rqaJG2n8mSdEVE/NVs0Qv0Cl/i7UzOTlJQR58dowIDAQAB"
+
         });
+
 
         client.setUserContext(org1.getPeerAdmin());
         String transactionID = channel.sendTransaction(proposalResponses).get(testConfig.getTransactionWaitTime(), TimeUnit.SECONDS).getTransactionID();
         out("Finished invoke transaction with transaction id %s", transactionID);
-        //;
-        queryChaincode(client, channel, org1, 0, 1, "fa67ad29516c1caa360ab946d3c02ec683ef2569c65e091da57178f502fea0c1");
-        queryChaincode(client, channel, org1, 0, 1, "6d65c8f0555e270bd562ab84235c965de942390b1c99b25a9646095b81c78021");
-        queryChaincode(client, channel, org1, 0, 1, "5c2dc969509e8021597c1eb37b0b3534b26972abe5721cf3c45f0fd86ac6133c");
-        queryChaincode(client, channel, org1, 0, 1, "e762186ee2d974e2849d6058ec4a35ec04cae6ef794a6a9197dc0d4a3a74fa0d");
+        queryChaincode(client, channel, org1, 0, 1);
+//        queryChaincode(client, channel, org1, 0, 1, "e762186ee2d974e2849d6058ec4a35ec04cae6ef794a6a9197dc0d4a3a74fa0d");
     }
 
-    static void queryChaincode(HFClient client, Channel channel, SampleOrg org, int start, int limit, String argsMan) throws InvalidArgumentException {
+    static void queryChaincode(HFClient client, Channel channel, SampleOrg org, int start, int limit, String... queryArgs) throws InvalidArgumentException {
         // Send Query Proposal to all peers
         //
         try {
-            out("Now query chaincode for the value of " + argsMan + ".");
+            out("Now query chaincode for the value of " + Arrays.toString(queryArgs) + ".");
             QueryByChaincodeRequest queryByChaincodeRequest = client.newQueryProposalRequest();
-            queryByChaincodeRequest.setArgs(new String[]{"query", argsMan});
+
+            String[] args = new String[queryArgs.length + 1];
+            args[0] = "query";
+            System.arraycopy(queryArgs, 0, args, 1, queryArgs.length);
+            queryByChaincodeRequest.setArgs(args);
             queryByChaincodeRequest.setFcn("invoke");
             queryByChaincodeRequest.setChaincodeID(ChaincodeID.newBuilder().setName(CHAIN_CODE_NAME)
                     .setVersion(CHAIN_CODE_VERSION)
@@ -202,7 +206,9 @@ public class MyTest {
                             + ". Was verified : " + proposalResponse.isVerified());
                 } else {
                     String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
-                    out("Query payload of b from peer %s returned %s", proposalResponse.getPeer().getName(), payload);
+                    out("Query payload of b from peer %s returned %s", proposalResponse.getPeer().getName(),
+                            payload.replaceAll("(\\Qnamespace:\"lottery_go\"\\E\\s*+)(key:\\s*+)(\"[^\"]++\"\\s*+)(value:\\s*+)"
+                                    , "\n$1\n$2\n$3\n$4\n").replaceAll("\\\\\"", ""));
                 }
             }
 
@@ -415,8 +421,10 @@ public class MyTest {
                 "6d65c8f0555e270bd562ab84235c965de942390b1c99b25a9646095b81c78021",
                 "5c2dc969509e8021597c1eb37b0b3534b26972abe5721cf3c45f0fd86ac6133c",
                 "e762186ee2d974e2849d6058ec4a35ec04cae6ef794a6a9197dc0d4a3a74fa0d",
-                "100", "100",
-                "100", "100",
+                "100",
+                "100",
+                "100",
+                "100",
         });
 
         Map<String, byte[]> tm = new HashMap<>();
@@ -489,7 +497,8 @@ public class MyTest {
             InstallProposalRequest installProposalRequest = client.newInstallProposalRequest();
             installProposalRequest.setChaincodeID(chaincodeID);
             ////For GO language and serving just a single user, chaincodeSource is mostly likely the users GOPATH
-            installProposalRequest.setChaincodeSourceLocation(new File(TEST_FIXTURES_PATH + "/sdkintegration/gocc/lottery"));
+
+            installProposalRequest.setChaincodeSourceLocation(new File(TEST_FIXTURES_PATH + ChainCodeNavtivePath));
             installProposalRequest.setChaincodeVersion(CHAIN_CODE_VERSION);
             out("Sending install proposal");
 

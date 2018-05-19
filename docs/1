@@ -1,0 +1,78 @@
+ [2018-05-17 08:07:45,890] DEBUG [agent.docker.docker_swarm] [docker_swarm.py:415           compose_up()] - Compose start: name=c4a2bd0ba1154430afe72e17925b61e4, host=host0, mapped_port={'ca_org1_ecap': 7850, 'peer0_org2_event': 7450, 'peer0_org1_event': 7050, 'peer0_org1_grpc': 7150, 'peer1_org2_event': 7650, 'dashboard': 8150, 'peer1_org1_event': 7250, 'orderer': 8050, 'peer1_org1_grpc': 7350, 'peer0_org2_grpc': 7550, 'ca_org2_ecap': 7950, 'peer1_org2_grpc': 7750},config={'size': 4, 'consensus_plugin': 'solo', 'network_type': 'fabric-1.0'}
+ envs {'VM_DOCKER_HOSTCONFIG_NETWORKMODE': 'cello_net_solo', 'CLUSTER_NETWORK': 'cello_net_solo', 'NETWORK_TYPES': 'fabric-1.0', 'VM_ENDPOINT': 'tcp://192.168.2.175:2375', 'HLF_VERSION': '1.0.5', 'PEER_NETWORKID': 'c4a2bd0ba1154430afe72e17925b61e4', 'DOCKER_HOST': 'tcp://192.168.2.175:2375', 'COMPOSE_FILE': 'fabric-solo-4.yaml', 'COMPOSE_PROJECT_NAME': 'c4a2bd0ba1154430afe72e17925b61e4', 'CLUSTER_LOG_LEVEL': 'debug', 'COMPOSE_PROJECT_PATH': '/opt/cello/fabric-1.0'}
+ template path ./agent/docker/_compose_files/fabric-1.0
+
+Creating c4a2bd0ba1154430afe72e17925b61e4_orderer ... done
+g', 'health': '', 'containers': [], 'worker_api': 'tcp://192.168.2.175:2375', 'create_ts': '2018-05-17T08:07:45.839000+00:00', 'consensus_plugin': 'solo', 'duration': 0.0, 'api_url': '', 'name': 'test_chain', 'mapped_ports': {'ca_org1_ecap': 7850, 'peer0_org2_event': 7450, 'peer0_org1_event': 7050, 'peer0_org1_grpc': 7150, 'peer1_org2_event': 7650, 'dashboard': 8150, 'peer1_org1_event': 7250, 'orderer': 8050, 'peer1_org1_grpc': 7350, 'peer0_org2_grpc': 7550, 'ca_org2_ecap': 7950, 'peer1_org2_grpc': 7750}, 'release_ts': None, 'id': 'c4a2bd0ba1154430afe72e17925b61e4', 'apply_ts': None, 'user_id': '', 'network_type': 'fabric-1.0', 'service_ports': [], 'size': 4, 'host_id': 'c554e056abef40c4a739cf54f985bf90'}]
+cello-operator-dashboard | 172.23.0.1 - - [17/May/2018 08:07:45] "GET /api/clusters? HTTP/1.1" 200 1239 0.073321
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_mysql ... 
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_ca_org2 ... 
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_ca_org1 ... 
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_orderer ... 
+Creating c4a2bd0ba1154430afe72e17925b61e4_peer1_org1 ... 
+Creating c4a2bd0ba1154430afe72e17925b61e4_peer1_org1 ... done
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_peer0_org1 ... 
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_peer1_org2 ...
+
+
+
+
+
+[2018-05-17 08:07:52,701] DEBUG [resources.stat] [utils.py:156        request_debug()] - path=/api/stat, method=GET
+- {'type': [{'name': 'solo', 'y': 1}, {'name': 'kafka/batch', 'y': 0}], 'status': [{'name': 'free', 'y': 1}, {'name': 'used', 'y': 0}]}
+cello-operator-dashboard | 172.23.0.1 - - [17/May/2018 08:07:52] "GET /api/stat?res=cluster HTTP/1.1" 200 376 0.058563
+Creating c4a2bd0ba1154430afe72e17925b61e4_peer0_org1 ... done
+Creating c4a2bd0ba1154430afe72e17925b61e4_cli ... error
+- {'type': [{'name': 'docker', 'y': 1}, {'name': 'swarm', 'y': 0}, {'nameCreating c4a2bd0ba1154430afe72e17925b61e4_explorer ... error
+cello-operator-dashboard | 172.23.0.1 - - [17/May/2018 08:07:52] "GET /api/stat?res=host HTTP/1.1" 200 487 0.038413
+Creating c4a2bd0ba1154430afe72e17925b61e4_cli ... 
+cello-operator-dashboard | Creating c4a2bd0ba1154430afe72e17925b61e4_explorer ... 
+cello-operator-dashboard | 
+cello-operator-dashboard | ERROR: for c4a2bd0ba1154430afe72e17925b61e4_cli  Cannot start service cli: OCI runtime create failed: container_linux.go:348: starting container process caused "process_linux.go:402: container init caused \"rootfs_linux.go:58: mounting \\\"/opt/cello/fabric-1.0/solo/configtx.yaml\\\" to rootfs \\\"/var/lib/docker/overlay2/0082f199fde18c76fbf39ba3edf865152910488c875bf11ac2999d9319c399c5/merged\\\" at \\\"/var/lib/docker/overlay2/0082f199fde18c76fbf39ba3edf865152910488c875bf11ac2999d9319c399c5/merged/etc/hyperledger/fabric/configtx.yaml\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+cello-operator-dashboard | 
+cello-operator-dashboard | ERROR: for c4a2bd0ba1154430afe72e17925b61e4_explorer  Cannot start service explorer: OCI runtime create failed: container_linux.go:348: starting container process caused "process_linux.go:402: container init caused \"rootfs_linux.go:58: mounting \\\"/opt/cello/fabric-1.0/explorer-artifacts/config.json\\\" to rootfs \\\"/var/lib/docker/overlay2/9dcdc10ba7193b65c53d0ac2aba50decfa387c299a1c27fdc8eb9e8ad482d581/merged\\\" at \\\"/var/lib/docker/overlay2/9dcdc10ba7193b65c53d0ac2aba50decfa387c299a1c27fdc8eb9e8ad482d581/merged/blockchain-explorer/config.json\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+cello-operator-dashboard | 
+cello-operator-dashboard | ERROR: for cli  Cannot start service cli: OCI runtime create failed: container_linux.go:348: starting container process caused "process_linux.go:402: container init caused \"rootfs_linux.go:58: mounting \\\"/opt/cello/fabric-1.0/solo/configtx.yaml\\\" to rootfs \\\"/var/lib/docker/overlay2/0082f199fde18c76fbf39ba3edf865152910488c875bf11ac2999d9319c399c5/merged\\\" at \\\"/var/lib/docker/overlay2/0082f199fde18c76fbf39ba3edf865152910488c875bf11ac2999d9319c399c5/merged/etc/hyperledger/fabric/configtx.yaml\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+cello-operator-dashboard | 
+cello-operator-dashboard | ERROR: for explorer  Cannot start service explorer: OCI runtime create failed: container_linux.go:348: starting container process caused "process_linux.go:402: container init caused \"rootfs_linux.go:58: mounting \\\"/opt/cello/fabric-1.0/explorer-artifacts/config.json\\\" to rootfs \\\"/var/lib/docker/overlay2/9dcdc10ba7193b65c53d0ac2aba50decfa387c299a1c27fdc8eb9e8ad482d581/merged\\\" at \\\"/var/lib/docker/overlay2/9dcdc10ba7193b65c53d0ac2aba50decfa387c299a1c27fdc8eb9e8ad482d581/merged/blockchain-explorer/config.json\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+[agent.docker.docker_swarm] [docker_swarm.py:431           compose_up()] - Exception when compose start=Encountered errors while bringing up the project.
+[agent.docker.cluster] [cluster.py:58               create()] - failed to create cluster, with container={}
+[modules.cluster] [cluster.py:221      _create_cluster()] - failed to start cluster=test_chain, then delete
+[modules.cluster] [cluster.py:345               delete()] - Delete cluster: id=c4a2bd0ba1154430afe72e17925b61e4, forced=True
+[modules.cluster] [cluster.py:862        db_update_one()] - filter {'state': 'active', 'id': 'c4a2bd0ba1154430afe72e17925b61e4'} operations {'status': 'deleting'}
+[modules.cluster] [cluster.py:865        db_update_one()] - k=set__status, v=deleting
+[modules.host] [host.py:429 get_active_host_by_id()] - check host with id = c554e056abef40c4a739cf54f985bf90
+[agent.docker.docker_swarm] [docker_swarm.py:602         compose_down()] - Compose remove c4a2bd0ba1154430afe72e17925b61e4 with worker_api=tcp://192.168.2.175:2375, config={'size': 4, 'consensus_plugin': 'solo', 'env': {'PEER0_ORG2_GRPC_PORT': '7550', 'PEER0_ORG1_GRPC_PORT': '7150', 'PEER0_ORG2_EVENT_PORT': '7450', 'PEER1_ORG1_GRPC_PORT': '7350', 'PEER1_ORG2_GRPC_PORT': '7750', 'ORDERER_PORT': '8050', 'DASHBOARD_PORT': '8150', 'CA_ORG2_ECAP_PORT': '7950', 'PEER0_ORG1_EVENT_PORT': '7050', 'PEER1_ORG1_EVENT_PORT': '7250', 'PEER1_ORG2_EVENT_PORT': '7650', 'CA_ORG1_ECAP_PORT': '7850'}, 'network_type': 'fabric-1.0'}
+[agent.docker.docker_swarm] [docker_swarm.py:391     _compose_set_env()] - envs {'PEER0_ORG2_GRPC_PORT': '7550', 'PEER0_ORG1_GRPC_PORT': '7150', 'PEER0_ORG2_EVENT_PORT': '7450', 'PEER1_ORG2_EVENT_PORT': '7650', 'PEER1_ORG2_GRPC_PORT': '7750', 'COMPOSE_PROJECT_NAME': 'c4a2bd0ba1154430afe72e17925b61e4', 'PEER_NETWORKID': 'c4a2bd0ba1154430afe72e17925b61e4', 'VM_DOCKER_HOSTCONFIG_NETWORKMODE': 'cello_net_solo', 'VM_ENDPOINT': 'tcp://192.168.2.175:2375', 'PEER1_ORG1_EVENT_PORT': '7250', 'CA_ORG2_ECAP_PORT': '7950', 'CA_ORG1_ECAP_PORT': '7850', 'CLUSTER_NETWORK': 'cello_net_solo', 'NETWORK_TYPES': 'fabric-1.0', 'HLF_VERSION': '1.0.5', 'COMPOSE_FILE': 'fabric-solo-4.yaml', 'ORDERER_PORT': '8050', 'PEER0_ORG1_EVENT_PORT': '7050', 'DASHBOARD_PORT': '8150', 'COMPOSE_PROJECT_PATH': '/opt/cello/fabric-1.0', 'PEER1_ORG1_GRPC_PORT': '7350', 'DOCKER_HOST': 'tcp://192.168.2.175:2375', 'CLUSTER_LOG_LEVEL': 'DEBUG'}
+[agent.docker.docker_swarm] [docker_swarm.py:608         compose_down()] - environ({'HOME': '/root', 'PEER0_ORG1_GRPC_PORT': '7150', 'PWD': '/app', 'CA_ORG2_ECAP_PORT': '7950', 'TLSCAA_PORT': '7059', 'VM_ENDPOINT': 'tcp://192.168.2.175:2375', 'PEER1_ORG2_EVENT_PORT': '7650', 'MONGO_URL': 'mongodb://cello-mongo:27017', 'WERKZEUG_RUN_MAIN': 'true', 'LOG_LEVEL': 'DEBUG', 'CA_ORG1_ECAP_PORT': '7850', 'NETWORK_TYPES': 'fabric-1.0', 'COMPOSE_FILE': 'fabric-solo-4.yaml', 'EVENT_PORT': '7053', 'ORDERER_PORT': '8050', 'DASHBOARD_PORT': '8150', 'PEER0_ORG1_EVENT_PORT': '7050', 'TLSCAP_PORT': '7058', 'MONGO_HOST': 'mongo', 'MONGO_DB': 'dev', 'HOSTNAME': 'cello-operator-dashboard', 'CLUSTER_LOG_LEVEL': 'DEBUG', 'PEER0_ORG2_GRPC_PORT': '7550', 'TCAA_PORT': '7057', 'PEER0_ORG2_EVENT_PORT': '7450', 'CLUSTER_NETWORK': 'cello_net_solo', 'STATIC_FOLDER': 'themes/basic/static', 'COMPOSE_PROJECT_NAME': 'c4a2bd0ba1154430afe72e17925b61e4', 'PEER_NETWORKID': 'c4a2bd0ba1154430afe72e17925b61e4', 'DOCKER_HOST': 'tcp://192.168.2.175:2375', 'VM_DOCKER_HOSTCONFIG_NETWORKMODE': 'cello_net_solo', 'PEER1_ORG1_EVENT_PORT': '7250', 'GRPC_PORT': '7051', 'ENABLE_EMAIL_ACTIVE': 'False', 'CLI_PORT': '7052', 'PEER1_ORG2_GRPC_PORT': '7750', 'ECAA_PORT': '7055', 'HLF_VERSION': '1.0.5', 'MONGODB_PORT': '27017', 'REST_PORT': '7050', 'DEBUG': 'True', 'TEMPLATE_FOLDER': 'themes/basic/templates', 'COMPOSE_PROJECT_PATH': '/opt/cello/fabric-1.0', 'PEER1_ORG1_GRPC_PORT': '7350', 'ECAP_PORT': '7054', 'TCAP_PORT': '7056', 'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'})
+cello-watchdog        | [2018-05-17 08:08:09,522] INFO [__main__] [watchdog.py:125            watch_run()] - Watchdog run checks with period = 15 s
+cello-watchdog        | [2018-05-17 08:08:09,523] INFO [modules.host] [host.py:248                 list()] - filter data {}
+cello-watchdog        | [2018-05-17 08:08:09,527] INFO [__main__] [watchdog.py:127            watch_run()] - Found 1 hosts
+cello-watchdog        | [2018-05-17 08:08:09,540] DEBUG [agent.docker.docker_swarm] [docker_swarm.py:170         check_daemon()] - ping_result=True
+cello-watchdog        | [2018-05-17 08:08:09,546] DEBUG [__main__] [watchdog.py:109           host_check()] - Host host0/c554e056abef40c4a739cf54f985bf90 is active, start checking
+cello-watchdog        | [2018-05-17 08:08:09,548] DEBUG [__main__] [watchdog.py:73  host_check_networks()] - Host host0/c554e056abef40c4a739cf54f985bf90: checking chains
+cello-watchdog        | [2018-05-17 08:08:09,549] DEBUG [modules.cluster] [cluster.py:83                 list()] - List all active clusters
+Stopping c4a2bd0ba1154430afe72e17925b61e4_peer0_org1 ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_peer1_org2 ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_peer1_org1 ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_peer0_org2 ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_orderer    ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_ca_org1    ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_ca_org2    ... done
+Stopping c4a2bd0ba1154430afe72e17925b61e4_mysql      ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_explorer   ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_cli        ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_peer0_org1 ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_peer1_org2 ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_peer1_org1 ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_peer0_org2 ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_orderer    ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_ca_org1    ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_ca_org2    ... done
+Removing c4a2bd0ba1154430afe72e17925b61e4_mysql      ... done
+[2018-05-17 08:08:16,909] DEBUG [agent.docker.docker_swarm] [docker_swarm.py:75 _clean_project_containers()] - Clean project containers, worker_api=tcp://192.168.2.175:2375, prefix=c4a2bd0ba1154430afe72e17925b61e4
+[agent.docker.docker_swarm] [docker_swarm.py:97 _clean_project_networks()] - Clean project networks, worker_api=tcp://192.168.2.175:2375, prefix=c4a2bd0ba1154430afe72e17925b61e4
+[agent.docker.docker_swarm] [docker_swarm.py:103 _clean_project_networks()] - Remove network id a19aa8f269f328cf5afef7f4487c494aac1dee00d264d090beda5a713a09f5ed
+[agent.docker.docker_swarm] [docker_swarm.py:53 _clean_chaincode_images()] - clean chaincode images with prefix=c4a2bd0ba1154430afe72e17925b61e4
+[agent.docker.docker_swarm] [docker_swarm.py:58 _clean_chaincode_images()] - chaincode image id to removes=
+[modules.cluster] [cluster.py:405               delete()] - remove cluster from host, cluster:c4a2bd0ba1154430afe72e17925b61e4

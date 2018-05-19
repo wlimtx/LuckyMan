@@ -1,4 +1,4 @@
-package org.hyperledger.fabric.sdkintegration;
+package org.hyperledger.fabric.sdkintegration.client;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.bouncycastle.util.encoders.Hex;
@@ -24,6 +24,7 @@ public class Pem {
         File key = new File(mspid, "key.pem");
 
 
+
         String message = "2335RRFLnbs2h+LYhgdFkV0Iih03MKQJ8jf3NwF7Qbyo+T4=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqZK5PmwmJJP1gLt7kKryINxwFt0HdkOuSBNuk4t+dveWKq1+NeAKTz+2KN7w9MndrsVRY5C0lKtn30iIPHvKjf5hrgaWQMF+T56XG10IZZjt1yjBRCV9uUAD5Zlsd9xEZFRDzzNuNRpacfo1e3YITEkAJsMmHAmYf6jz/vKgbWQN3/0k5+KpxTD6avcqLP5un5riXhE3j3Thd6vOQhPh/ocLu7030PCBa1pS0thKsBPgmI3MtHpA7jE7TBBE/slFwaZuhmDbG9f5vCeGcJkahfLj58ifok1SH/u6tMiqiQNxLaYVeAZ+zcX29Z748P3Usjp2S1TcLBPsbMQkva9/QIDAQAB";
         System.out.println(Arrays.toString(message.getBytes()));
 
@@ -43,10 +44,10 @@ public class Pem {
 
         byte[] sign1 = sign(message.getBytes(), rsaPrivateKey);
         System.out.println(doCheck(message.getBytes(), sign1, key1));
+        System.out.println(rsaPrivateKey.getPrivateExponent());
     }
 
     public static byte[] rsaWithSha256(byte[] plainText, RSAPrivateKey key) throws Exception {
-
         return encrypt(sha256(plainText), key);
     }
 
@@ -136,5 +137,20 @@ public class Pem {
         return false;
     }
 
+    public static int randomNumber() {
+        return new SecureRandom().nextInt(10_000_000);
+    }
+    public static byte[] randomBytes() {
+        SecureRandom sec = new SecureRandom();
+        byte[] random = new byte[sec.nextInt(32) + 1];
+        sec.nextBytes(random);
+        return random;
+    }
+
+    public static byte[] nTimesOfSha256(int n, byte[] bytes) {
+        for (int i = n; i > 0; i--)
+            bytes = Pem.sha256(bytes);
+        return bytes;
+    }
 }
 

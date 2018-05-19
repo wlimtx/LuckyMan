@@ -12,7 +12,7 @@ identities:  # list roles to be used in the policy
     admin2: {"role": {"name": "admin", "mspId": "Org2MSP"}}
 
 policy: # the policy  .. could have been flat but show grouping.
-    1-of: # signed by one of these groups  can be <n>-of  where <n> is any digit 2-of, 3-of etc..
+    2-of: # signed by one of these groups  can be <n>-of  where <n> is any digit 2-of, 3-of etc..
       - 1-of:
         - signed-by: "user1" # a reference to one of the identities defined above.
         - signed-by: "admin1"

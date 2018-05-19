@@ -1,4 +1,4 @@
-package org.hyperledger.fabric.sdkintegration;
+package org.hyperledger.fabric.sdkintegration.test;
 
 
 import java.util.Arrays;

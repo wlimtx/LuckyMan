@@ -1,0 +1,144 @@
+package docs
+
+import (
+	pb "github.com/hyperledger/fabric/protos/peer"
+	"crypto/sha256"
+	"fmt"
+	"encoding/hex"
+	"crypto/x509"
+	"crypto/rsa"
+	"crypto"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"math"
+	list2 "container/list"
+	"encoding/binary"
+	"bytes"
+	"encoding/json"
+	big2 "math/big"
+)
+
+//公钥验证
+func RsaSignVer(rawPuk []byte,data []byte, signature []byte) error {
+	hashed := sha256.Sum256(data)
+	fmt.Println("data hash: ", hex.EncodeToString(hashed[:]))
+
+	fmt.Println("data signature: ",hex.EncodeToString(signature))
+	// 解析公钥
+	pubInterface, err := x509.ParsePKIXPublicKey(rawPuk)
+	if err != nil {
+		return err
+	}
+	// 类型断言
+	pub := pubInterface.(*rsa.PublicKey)
+	//验证签名
+	return rsa.VerifyPKCS1v15(pub, crypto.SHA256, hashed[:], signature)
+}
+
+
+func  (t *LuckBytes)f(stub shim.ChaincodeStubInterface, K *list2.List,men map[string]*Man) (bool,pb.Response){
+	var base = sha256.Sum256([]byte("Cipher"))
+	I := base
+	LuckBytes := I[:]
+	fmt.Println("Base Bytes: ", LuckBytes)
+	sumBet := 0.0
+	//计算真实幸运数字
+	//只有计算真实幸运数字的时候才需要保证有序
+	for k:= K.Front();k!=nil;k=k.Next() {
+		man := men[k.Value.(string)]
+		I = sha256.Sum256(bytes.Join([][]byte{man.LuckBytes, LuckBytes},[]byte("")))
+		I = sha256.Sum256(I[:])
+		LuckBytes = I[:]
+		fmt.Println("twice of sha256 Base Bytes: ", LuckBytes)
+		if /* man.Status == 2 || */ man.Status == 3 {
+			I = sha256.Sum256(bytes.Join([][]byte{man.Cipher, LuckBytes},[]byte("")))
+			LuckBytes = I[:]
+		}
+		sumBet += man.BetAsset
+	}
+	sum256 := sha256.Sum256(LuckBytes)
+	LuckBytes = sum256[:]
+	//用用户的输入决定
+	bigLuck,ok := new(big2.Int).SetString(hex.EncodeToString(LuckBytes), 16)
+	if !ok {
+		return false,shim.Error("Covert Big Integer Fail")
+	}
+
+	fmt.Println("big Luck ", bigLuck)
+
+	//计算每份幸运字节与真实幸运字节的匹配程度
+	sumGap := new(big2.Int)
+	//记录所有的差距
+	D := list2.New()
+
+	for k:= K.Front();k!=nil;k=k.Next() {
+		man := men[k.Value.(string)]
+		I = sha256.Sum256(bytes.Join([][]byte{man.LuckBytes, LuckBytes},[]byte("")))
+		I = sha256.Sum256(I[:])
+
+		bigI, ok := new(big2.Int).SetString(hex.EncodeToString(I[:]), 16)
+		if !ok {
+			return false,shim.Error("Covert Big I Fail")
+		}
+		bigI.Sub(bigI, bigLuck).Abs(bigI)
+
+		//记录每份差距
+		D.PushFront(bigI)
+
+		//累计差距
+		sumGap.Add(sumGap, bigI)
+	}
+	M := list2.New()
+	V := 0.0
+	d:= D.Front()
+	for k:= K.Front();k!=nil;k=k.Next() {
+		man := men[k.Value.(string)]
+		frac := new(big2.Rat).SetFrac(d.Value.(*big2.Int), sumGap)
+		f, exact := frac.Float64()
+		if !exact {
+			fmt.Println("convert is not very exact ")
+		}
+		v := f * man.BetAsset/ sumBet
+		V +=  v
+		M.PushFront(v)
+		d = d.Next()
+	}
+	//分配资产
+	m:= M.Front()
+	for k:= K.Front();k!=nil;k=k.Next() {
+		man := men[k.Value.(string)]
+		fmt.Println("before asset: ",man.Asset)
+		man.Asset+=m.Value.(float64)/V* sumBet
+		man.Status = 0 //开始下一次彩票
+		man.LuckBytes=nil
+		man.Cipher=nil
+		man.BetAsset= 0
+
+		manBytes ,err := json.Marshal(man)
+		if err !=nil{
+			return false,shim.Error("convert object to json fail" )
+		}
+		err = stub.PutState(k.Value.(string), manBytes)
+		if err!=nil {
+			return false,shim.Error("putState error")
+		}
+		fmt.Println("after asset: ",man.Asset)
+		m=m.Next()
+	}
+
+	return true,shim.Success(nil)
+}
+
+
+func Float64ToByte(float float64) []byte {
+	bits := math.Float64bits(float)
+	bytes := make([]byte, 8)
+	binary.LittleEndian.PutUint64(bytes, bits)
+
+	return bytes
+}
+
+func ByteToFloat64(bytes []byte) float64 {
+	bits := binary.LittleEndian.Uint64(bytes)
+
+	return math.Float64frombits(bits)
+}
